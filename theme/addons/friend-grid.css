@@ -1,0 +1,11 @@
+.friendsWrap-1rJtfp .friend-3YARte {
+  background: rgba(18,18,28,0.7);
+  border-radius: 12px;
+  margin: 6px;
+  padding: 10px;
+  transition: all 0.2s cubic-bezier(.2,.9,.3,1);
+}
+.friendsWrap-1rJtfp .friend-3YARte:hover {
+  background: rgba(123,97,255,0.2);
+  transform: scale(1.02);
+}

@@ -1,89 +1,12 @@
-/**
- * Luminara - Glowing Input Box
- * File: theme/addons/glowing-input.css
- */
-
-/* variables */
-:root{
-  --lum-input-radius: 12px;
-  --lum-input-glow-1: rgba(123,97,255,0.36);
-  --lum-input-glow-2: rgba(255,111,181,0.22);
-  --lum-input-border: 1px solid rgba(255,255,255,0.04);
-  --lum-input-focus-shadow: 0 10px 40px rgba(123,97,255,0.12);
-  --lum-input-transition: 200ms cubic-bezier(.2,.9,.3,1);
+.channelTextArea-1V5u9u textarea {
+  background: rgba(36,36,36,0.6) !important;
+  border: 2px solid rgba(123,97,255,0.6);
+  border-radius: 12px;
+  padding: 10px;
+  color: #e5e5e5;
+  transition: all 200ms cubic-bezier(.2,.9,.3,1);
 }
-
-/* target the text area wrapper and textarea */
-.channelTextArea-1V5u9u,
-.channelTextArea-1V5u9u textarea,
-.textArea-12jD-V,
-.textarea-1X1E6z {
-  border-radius: var(--lum-input-radius);
-  border: var(--lum-input-border);
-  transition: box-shadow var(--lum-input-transition), transform var(--lum-input-transition), border-color var(--lum-input-transition);
-  background: linear-gradient(180deg, rgba(255,255,255,0.016), rgba(255,255,255,0.01));
-  position: relative;
-}
-
-/* default subtle glow around input */
-.channelTextArea-1V5u9u::before,
-.channelTextArea-1V5u9u::after {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  z-index: -1;
-  border-radius: calc(var(--lum-input-radius) + 6px);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--lum-input-transition), transform var(--lum-input-transition);
-}
-
-/* layered glow - purple/pink then teal */
-.channelTextArea-1V5u9u::before {
-  background: radial-gradient(circle, var(--lum-input-glow-1), transparent 40%);
-  filter: blur(18px) saturate(120%);
-}
-.channelTextArea-1V5u9u::after {
-  background: radial-gradient(circle, var(--lum-input-glow-2), transparent 40%);
-  filter: blur(28px) saturate(110%);
-}
-
-/* focus state: show the glow and lift slightly */
-.channelTextArea-1V5u9u.focused-3Zb, /* example focus class some clients add */
-.channelTextArea-1V5u9u:focus-within {
-  transform: translateY(-2px);
-  box-shadow: var(--lum-input-focus-shadow);
-}
-.channelTextArea-1V5u9u:focus-within::before,
-.channelTextArea-1V5u9u:focus-within::after {
-  opacity: 1;
-}
-
-/* pulse mode (optional): animates the glow softly */
-.channelTextArea-1V5u9u[data-mode="pulse"]:focus-within::before,
-.channelTextArea-1V5u9u[data-mode="pulse"]:focus-within::after {
-  animation: luminara-input-pulse 2400ms ease-in-out infinite;
-}
-@keyframes luminara-input-pulse {
-  0% { transform: scale(1); opacity: 0.9; }
-  50% { transform: scale(1.02); opacity: 1; }
-  100% { transform: scale(1); opacity: 0.9; }
-}
-
-/* solid mode: immediate full glow */
-.channelTextArea-1V5u9u[data-mode="solid"]:focus-within::before,
-.channelTextArea-1V5u9u[data-mode="solid"]:focus-within::after {
-  opacity: 1;
-  transform: none;
-}
-
-/* minimal / none mode - for battery saving or personal preference */
-.channelTextArea-1V5u9u[data-mode="none"]::before,
-.channelTextArea-1V5u9u[data-mode="none"]::after { display: none !important; }
-
-/* decrease motion accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .channelTextArea-1V5u9u[data-mode="pulse"]:focus-within::before,
-  .channelTextArea-1V5u9u[data-mode="pulse"]:focus-within::after { animation: none; }
-  .channelTextArea-1V5u9u:focus-within { transform: none; }
+.channelTextArea-1V5u9u textarea:focus {
+  border-color: rgb(61,242,192);
+  box-shadow: 0 0 10px rgb(61,242,192);
 }

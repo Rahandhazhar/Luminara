@@ -1,0 +1,11 @@
+.status-3D6o9s {
+  box-shadow: 0 0 6px 2px rgba(123,97,255,0.7);
+  border-radius: 50%;
+  transition: box-shadow 0.2s ease;
+}
+.status-3D6o9s.idle {
+  box-shadow: 0 0 6px 2px rgba(61,242,192,0.7);
+}
+.status-3D6o9s.dnd {
+  box-shadow: 0 0 6px 2px rgba(255,111,181,0.7);
+}
