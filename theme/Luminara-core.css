@@ -1,0 +1,524 @@
+/*!
+ * Luminara - Core CSS
+ * File: Luminara-core.css
+ * Purpose: foundation styles for Luminara theme (windows, sidebar, scrollbars, inputs, reactions, etc.)
+ */
+
+/* ==========================
+   ROOT VARIABLES (tweak these)
+   ========================== */
+:root{
+  /* accents (use RGB for some gradients) */
+  --lum-accent-1: 123, 97, 255;
+  --lum-accent-2: 61, 242, 192;
+  --lum-accent-3: 255, 111, 181;
+
+  /* base colors */
+  --lum-bg-primary: rgba(12,12,20,0.92);
+  --lum-bg-secondary: rgba(18,18,28,0.8);
+  --lum-surface: rgba(22,22,30,0.6);
+
+  --lum-text-primary: #e7e7ea;
+  --lum-text-secondary: #b9bac1;
+
+  /* radii & sizing */
+  --lum-radius: 12px;
+  --lum-radius-sm: 8px;
+  --lum-gap: 12px;
+
+  /* shadows & blur */
+  --lum-window-blur: 8px;
+  --lum-shadow-lg: 0 20px 50px rgba(0,0,0,0.6);
+  --lum-shadow-md: 0 8px 30px rgba(0,0,0,0.45);
+
+  /* transitions */
+  --lum-ease: cubic-bezier(.2,.9,.3,1);
+  --lum-speed: 200ms;
+
+  /* scrollbars */
+  --lum-scrollbar-width: 10px;
+  --lum-scrollbar-track: rgba(255,255,255,0.02);
+
+  /* reaction and button tuning */
+  --lum-reaction-scale: 1.18;
+  --lum-reaction-press-scale: 0.95;
+
+  /* wallpaper variable (can be overridden externally) */
+  --lum-wallpaper: none;
+  --lum-wallpaper-blur: 14px;
+  --lum-wallpaper-dim: 0.6;
+}
+
+/* ==========================
+   GLOBAL BASE LAYER
+   ========================== */
+/* apply general font & smoothing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: all var(--lum-speed) var(--lum-ease);
+}
+
+/* prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* default dark background on theme container (generic + Discord selectors) */
+:root.theme-dark,
+.theme-dark,
+.appMount-2yBXZl {
+  background: var(--lum-bg-primary);
+  color: var(--lum-text-primary);
+}
+
+/* panel / surface fallback */
+.container-3baos1,
+.layer-2lt3qi,
+.layerContainer-2R1xO-,
+.appMount-2yBXZl,
+#app-mount {
+  background: transparent;
+}
+
+/* default radius for card-like elements */
+.card,
+.panel,
+.container-3baos1,
+.layer-2lt3qi,
+.popout,
+.tooltip,
+.popup {
+  border-radius: var(--lum-radius);
+}
+
+/* ==========================
+   WALLPAPER (optional override)
+   ========================== */
+/* If you set --lum-wallpaper to a url(...) this will draw it behind UI */
+:root[style*="--lum-wallpaper"], /* inline override support */
+:root {
+  /* nothing enforced here by default - can be set by theme wrapper or imported wallpaper.css */
+}
+
+#app-mount::before,
+.appMount-2yBXZl::before,
+.layerContainer-2R1xO-::before,
+.bg-1QIAus::before {
+  /* only render if --lum-wallpaper not 'none' */
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--lum-wallpaper) center/cover no-repeat fixed;
+  filter: blur(var(--lum-wallpaper-blur)) brightness(var(--lum-wallpaper-dim));
+  z-index: -9999;
+  pointer-events: none;
+  transition: filter 360ms var(--lum-ease);
+}
+
+/* make core panels transparent so wallpaper shows through when desired */
+.theme-dark .container-3baos1,
+.theme-dark .layer-2lt3qi {
+  background-color: rgba(18,18,28,0.55);
+  backdrop-filter: blur(calc(var(--lum-window-blur) / 1.2));
+}
+
+/* ==========================
+   SIDEBAR (floating look)
+   ========================== */
+/* target common discord selectors and fallbacks */
+.sidebar-2K8pFh,
+.guilds-1SWlCJ,
+.container-3gYw6G,
+.sidebar {
+  position: relative;
+  border-radius: calc(var(--lum-radius) + 4px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  backdrop-filter: blur(var(--lum-window-blur));
+  box-shadow: var(--lum-shadow-md);
+  transition: transform var(--lum-speed) var(--lum-ease), width var(--lum-speed) var(--lum-ease);
+  z-index: 10;
+}
+
+/* floating effect: small lift on hover for entire sidebar */
+.sidebar-2K8pFh:hover,
+.guilds-1SWlCJ:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--lum-shadow-lg);
+}
+
+/* compact collapsed look fallback */
+.sidebar-2K8pFh.collapsed,
+.guilds-1SWlCJ.collapsed {
+  width: 64px !important;
+}
+
+/* guild icon hover glow */
+.guild-2JXb8r .avatar-1BDn8e,
+.guild-2JXb8r .guildIcon-3-o1In {
+  transition: transform var(--lum-speed) var(--lum-ease), box-shadow var(--lum-speed) var(--lum-ease);
+}
+.guild-2JXb8r:hover .avatar-1BDn8e,
+.guild-2JXb8r:hover .guildIcon-3-o1In {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(var(--lum-accent-1),0.08);
+}
+
+/* ==========================
+   WINDOW / PANELS / CARDS
+   ========================== */
+.window,
+.app,
+.layer-2lt3qi,
+.container-3baos1,
+.scroller-a_VaK5 {
+  border-radius: var(--lum-radius);
+  background-clip: padding-box;
+}
+
+/* panel subtle blur + border */
+.container-3baos1,
+.layer-2lt3qi {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.02);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.45);
+}
+
+/* activity cards */
+.activity-card,
+.activityCard-3Qf3f8,
+.activity-2XxQkY {
+  border-radius: calc(var(--lum-radius) - 2px);
+  overflow: hidden;
+}
+
+/* ==========================
+   SCROLLBARS (vibrant)
+   ========================== */
+/* Webkit (Discord uses Chromium) */
+*::-webkit-scrollbar {
+  width: var(--lum-scrollbar-width);
+  height: var(--lum-scrollbar-width);
+}
+*::-webkit-scrollbar-track {
+  background: var(--lum-scrollbar-track);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, rgba(var(--lum-accent-1),0.95), rgba(var(--lum-accent-2),0.9));
+  border-radius: 999px;
+  border: 2px solid rgba(0,0,0,0.12);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  transition: transform 160ms var(--lum-ease), box-shadow 160ms var(--lum-ease);
+}
+*::-webkit-scrollbar-thumb:hover{
+  transform: scale(1.02);
+  box-shadow: 0 14px 36px rgba(var(--lum-accent-1),0.12);
+}
+
+/* Firefox fallback (thin) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--lum-accent-1),0.9) transparent;
+}
+
+/* reduce visual noise in tiny containers */
+.guilds-1SWlCJ *::-webkit-scrollbar,
+.messagesWrapper-3lZDfY *::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* ==========================
+   MESSAGE / HOVER CARD
+   ========================== */
+/* message container (common selectors) */
+.message-2qnXI6,
+.messageListItem-3V3k7y,
+.message {
+  transition: transform var(--lum-speed) var(--lum-ease), box-shadow var(--lum-speed) var(--lum-ease), background var(--lum-speed) var(--lum-ease);
+  border-radius: calc(var(--lum-radius) - 2px);
+  position: relative;
+  z-index: 1;
+}
+
+/* hover card lift + glow */
+.message-2qnXI6:hover,
+.messageListItem-3V3k7y:hover,
+.message:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.55), 0 0 30px rgba(var(--lum-accent-1),0.035);
+  background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));
+}
+
+/* reveal action buttons smoothly on hover */
+.message-2qnXI6 .buttons-3pXr91,
+.messageListItem-3V3k7y .buttons-3pXr91,
+.message .buttons {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 160ms ease, transform 180ms var(--lum-ease);
+  pointer-events: none;
+}
+.message-2qnXI6:hover .buttons-3pXr91,
+.messageListItem-3V3k7y:hover .buttons-3pXr91,
+.message:hover .buttons {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* keyboard focus accessible highlight */
+.message-2qnXI6:focus,
+.messageListItem-3V3k7y.keyboard-focus {
+  outline: 2px solid rgba(var(--lum-accent-1),0.12);
+  outline-offset: 4px;
+}
+
+/* single-line compact support class (you can add .luminara-compact to body) */
+.luminara-compact .message-2qnXI6 .markup-2BOw-j {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================
+   GLOWING INPUT (message composer)
+   ========================== */
+.channelTextArea-1V5u9u,
+.textArea-12jD-V,
+.textarea-1X1E6z,
+.composer {
+  border-radius: calc(var(--lum-radius) - 2px);
+  transition: box-shadow var(--lum-speed) var(--lum-ease), transform var(--lum-speed) var(--lum-ease);
+  background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 6px;
+}
+
+/* inner textarea focus glow */
+.channelTextArea-1V5u9u textarea:focus,
+.textArea-12jD-V:focus,
+.textarea-1X1E6z:focus {
+  outline: none;
+  box-shadow: 0 10px 40px rgba(var(--lum-accent-2),0.12);
+  border-color: rgba(var(--lum-accent-2),0.9);
+  transform: translateY(-2px);
+}
+
+/* optional pulse mode if consumer toggles data-mode attribute */
+.channelTextArea-1V5u9u[data-mode="pulse"]:focus-within,
+.channelTextArea-1V5u9u[data-mode="pulse"] textarea:focus {
+  animation: luminara-input-pulse 2400ms ease-in-out infinite;
+}
+@keyframes luminara-input-pulse {
+  0% { box-shadow: 0 8px 34px rgba(var(--lum-accent-2),0.10); transform: translateY(-2px); }
+  50% { box-shadow: 0 16px 46px rgba(var(--lum-accent-2),0.14); transform: translateY(-1px); }
+  100% { box-shadow: 0 8px 34px rgba(var(--lum-accent-2),0.10); transform: translateY(-2px); }
+}
+
+/* ==========================
+   REACTIONS / EMOJI UI
+   ========================== */
+/* common reaction selectors */
+.reaction-1N1J8O,
+.emojiButton-3q0z1X,
+.reactionInner-1c0a6Z,
+.reaction {
+  transition: transform 160ms var(--lum-ease), box-shadow 160ms var(--lum-ease);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* hover and press states */
+.reaction-1N1J8O:hover,
+.emojiButton-3q0z1X:hover,
+.reaction:hover {
+  transform: translateY(-6px) scale(var(--lum-reaction-scale));
+  box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+  z-index: 6;
+}
+.reaction-1N1J8O:active,
+.emojiButton-3q0z1X:active,
+.reaction:active {
+  transform: scale(var(--lum-reaction-press-scale));
+}
+
+/* small rounded reaction count background */
+.reaction-1N1J8O .count-1rJ5cT,
+.reaction .count {
+  background: linear-gradient(90deg, rgba(var(--lum-accent-1),0.06), rgba(var(--lum-accent-2),0.03));
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* optional burst effect via transient class .lum-burst (JS can toggle) */
+.reaction-1N1J8O.lum-burst::after,
+.reaction.lum-burst::after,
+.emojiButton-3q0z1X.lum-burst::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  transform: translate(-50%,-50%) scale(0.2);
+  border-radius: 50%;
+  background: rgba(var(--lum-accent-1),0.14);
+  filter: blur(6px);
+  animation: lum-burst 420ms cubic-bezier(.2,.9,.3,1) forwards;
+  pointer-events: none;
+}
+@keyframes lum-burst {
+  0% { transform: translate(-50%,-50%) scale(0.15); opacity: 1; }
+  50% { transform: translate(-50%,-80%) scale(1.5); opacity: 0.6; }
+  100% { transform: translate(-50%,-180%) scale(2.6); opacity: 0; }
+}
+
+/* ==========================
+   POPOUTS & TOOLTIPS
+   ========================== */
+.popout,
+.tooltip,
+.popup,
+.contextMenu {
+  background: linear-gradient(180deg, rgba(8,8,10,0.82), rgba(12,12,16,0.78));
+  border-radius: var(--lum-radius-sm);
+  padding: 8px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  color: var(--lum-text-primary);
+}
+
+/* context menu items hover */
+.popout .item-1Yvehc:hover,
+.contextMenu .item-1Yvehc:hover,
+.menuItem-1vV1oZ:hover {
+  background: linear-gradient(90deg, rgba(var(--lum-accent-1),0.06), rgba(var(--lum-accent-2),0.03));
+  color: var(--lum-text-primary);
+}
+
+/* ==========================
+   AVATAR STATUS GLOW
+   ========================== */
+/* generic avatar container selectors */
+.avatar-1BDn8e,
+.avatar,
+.avatarLarge,
+.avatarSmall,
+.avatarDefault-3f1jk2 {
+  transition: box-shadow 200ms var(--lum-ease);
+}
+
+/* online/idle/dnd glow classes (works if plugin or app uses these status classes) */
+.status-1P2Z2q.online,
+.avatar-online,
+.avatarStatus-online,
+.avatar--online {
+  box-shadow: 0 0 8px rgba(29,245,148,0.9), inset 0 0 0 2px rgba(29,245,148,0.12);
+}
+.status-1P2Z2q.idle,
+.avatar-idle,
+.avatarStatus-idle,
+.avatar--idle {
+  box-shadow: 0 0 8px rgba(250,166,26,0.9), inset 0 0 0 2px rgba(250,166,26,0.12);
+}
+.status-1P2Z2q.dnd,
+.avatar-dnd,
+.avatarStatus-dnd,
+.avatar--dnd {
+  box-shadow: 0 0 8px rgba(240,71,71,0.9), inset 0 0 0 2px rgba(240,71,71,0.12);
+}
+
+/* offline subtle ring */
+.status-1P2Z2q.offline,
+.avatar-offline {
+  box-shadow: 0 0 6px rgba(99,107,117,0.22) inset;
+}
+
+/* phone icon visibility control (some classes differ) */
+.rs-phone {
+  display: var(--rs-phone-visible, block);
+  color: var(--rs-phone-color, rgba(29,245,148,1));
+}
+
+/* ==========================
+   BUTTONS & INTERACTIVES
+   ========================== */
+.button,
+.button-38aScr,
+.button-2m7V2Q,
+.interactive,
+.actionButton {
+  border-radius: 10px;
+  padding: 6px 10px;
+  transition: transform var(--lum-speed) var(--lum-ease), box-shadow var(--lum-speed) var(--lum-ease);
+}
+.button:hover,
+.button-38aScr:hover,
+.button-2m7V2Q:hover,
+.interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(var(--lum-accent-1),0.06);
+}
+
+/* subtle primary buttons using accent */
+.button-primary,
+.btn-primary,
+.button-38aScr.lookFilled {
+  background: linear-gradient(90deg, rgba(var(--lum-accent-1),0.12), rgba(var(--lum-accent-2),0.08));
+  border: 1px solid rgba(var(--lum-accent-1),0.06);
+}
+
+/* focus outlines for accessibility */
+.button:focus,
+.button-38aScr:focus,
+.interactive:focus {
+  outline: 2px solid rgba(var(--lum-accent-1),0.12);
+  outline-offset: 3px;
+}
+
+/* ==========================
+   ACCENT BORDERS & GLOW UTILITIES
+   ========================== */
+.lum-accent-border {
+  border: 1px solid rgba(var(--lum-accent-1),0.08);
+  border-radius: 10px;
+  transition: box-shadow var(--lum-speed) var(--lum-ease);
+}
+.lum-accent-border:hover {
+  box-shadow: 0 10px 30px rgba(var(--lum-accent-1),0.08);
+}
+
+/* quick utility for soft glow outlines */
+.lum-soft-glow {
+  box-shadow: 0 8px 30px rgba(var(--lum-accent-1),0.06);
+}
+
+/* ==========================
+   RESPONSIVE / FALLBACKS
+   ========================== */
+/* disable some heavy effects on small screens */
+@media (max-width: 900px) {
+  .sidebar-2K8pFh,
+  .guilds-1SWlCJ {
+    position: static !important;
+    width: auto !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .message-2qnXI6:hover,
+  .messageListItem-3V3k7y:hover { transform: none !important; box-shadow: none !important; }
+  *::-webkit-scrollbar { width: 8px; }
+}
+
+/* ==========================
+   END OF CORE
+   ========================== */
+/* Notes:
+ - This file is deliberately conservative with selectors (includes both generic and common Discord classnames)
+ - Tweak :root variables at top to change global look (accent colors, radii, speeds)
+ - Addons (wallpaper, friend grid, radial status, etc.) should be added as separate addon files that import or override these variables
+*/
