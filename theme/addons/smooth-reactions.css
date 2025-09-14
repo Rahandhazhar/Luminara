@@ -1,0 +1,108 @@
+/**
+ * Luminara - Smooth Reactions addon
+ * Put this file into theme/addons/smooth-reactions.css
+ *
+ * This file smooths reaction transitions, adds scaling on hover,
+ * and a lightweight CSS "burst" effect using pseudo-elements.
+ */
+
+/* variables */
+:root{
+  --lum-reaction-scale: 1.14;
+  --lum-reaction-press-scale: 0.95;
+  --lum-reaction-ease: cubic-bezier(.2,.9,.3,1);
+  --lum-burst-size: 12px;
+  --lum-burst-color: rgba(123,97,255,0.18);
+  --lum-reaction-shadow: 0 8px 24px rgba(3,4,12,0.45);
+}
+
+/* smooth the reaction button container expansion */
+.reaction-1N1J8O,
+.reactionInner-1c0a6Z,
+.emojiButton-3q0z1X {
+  transition: transform 180ms var(--lum-reaction-ease), box-shadow 180ms var(--lum-reaction-ease), filter 180ms var(--lum-reaction-ease), opacity 160ms linear;
+  will-change: transform, opacity;
+}
+
+/* hover: gentle scale + glow */
+.reaction-1N1J8O:hover,
+.emojiButton-3q0z1X:hover,
+.reactionInner-1c0a6Z:hover {
+  transform: translateY(-4px) scale(var(--lum-reaction-scale));
+  box-shadow: var(--lum-reaction-shadow);
+  filter: saturate(1.06);
+  z-index: 4;
+}
+
+/* active / press */
+.reaction-1N1J8O:active,
+.emojiButton-3q0z1X:active {
+  transform: scale(var(--lum-reaction-press-scale));
+  transition-duration: 120ms;
+}
+
+/* make the reaction popup smoother */
+.reactionPicker-1f7Q7b,
+.emojiPicker-1eBv4K,
+.reactionList-3Qv1hE {
+  transition: opacity 220ms ease, transform 220ms ease;
+  transform-origin: center top;
+}
+
+/* subtle background for selected reaction count */
+.reaction-1N1J8O .count-1rJ5cT,
+.reaction-1N1J8O .children-2q5wJX {
+  background: linear-gradient(90deg, rgba(123,97,255,0.06), rgba(61,242,192,0.03));
+  border-radius: 10px;
+  padding: 2px 6px;
+  transition: background 180ms var(--lum-reaction-ease);
+}
+
+/* little burst effect on add (pure CSS trick using a transient class) */
+/* Note: you need JS to toggle .lum-burst on the reaction element when clicked. */
+/* But to keep compatible, also animate when :active (fallback). */
+.reaction-1N1J8O.lum-burst::after,
+.reaction-1N1J8O:active::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: var(--lum-burst-size);
+  height: var(--lum-burst-size);
+  transform: translate(-50%,-50%) scale(0.2);
+  border-radius: 50%;
+  background: var(--lum-burst-color);
+  filter: blur(6px);
+  opacity: 0.85;
+  z-index: 3;
+  animation: lum-burst 420ms cubic-bezier(.2,.9,.3,1) forwards;
+  pointer-events: none;
+}
+
+/* burst animation */
+@keyframes lum-burst {
+  0% { transform: translate(-50%,-50%) scale(0.15); opacity: 0.95; }
+  50% { transform: translate(-50%,-80%) scale(1.6); opacity: 0.55; }
+  100% { transform: translate(-50%,-180%) scale(2.4); opacity: 0; }
+}
+
+/* make reaction rows slightly rounded and padded for finger-friendly targets */
+.reaction-1N1J8O,
+.reactionInner-1c0a6Z {
+  border-radius: 10px;
+  padding: 4px;
+}
+
+/* reaction hover for accessibility: outline focus for keyboard nav */
+.reaction-1N1J8O:focus,
+.reaction-1N1J8O.keyboard-focus {
+  outline: 2px solid rgba(123,97,255,0.18);
+  outline-offset: 2px;
+}
+
+/* reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .reaction-1N1J8O:hover,
+  .emojiButton-3q0z1X:hover { transform: none !important; box-shadow: none !important; }
+  .reaction-1N1J8O.lum-burst::after,
+  .reaction-1N1J8O:active::after { animation: none; opacity: 0 !important; }
+}

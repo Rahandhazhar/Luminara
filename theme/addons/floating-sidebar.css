@@ -1,0 +1,125 @@
+/**
+ * Luminara - Floating Sidebar addon
+ * Put this file into theme/addons/floating-sidebar.css
+ *
+ * Usage:
+ * - To enable in preview: add class `luminara-floating-sidebar` to <body>
+ * - In real client: plugin can toggle `document.body.classList.add('luminara-floating-sidebar')`
+ */
+
+/* variables */
+:root{
+  --lum-sidebar-width: 72px;      /* collapsed width */
+  --lum-sidebar-hover-width: 220px;/* expanded on hover (guild list or sidebar panels) */
+  --lum-sidebar-radius: 16px;
+  --lum-sidebar-blur: 12px;
+  --lum-sidebar-shadow: 0 18px 40px rgba(3,4,12,0.6);
+  --lum-sidebar-glow: rgba(123,97,255,0.12);
+  --lum-sidebar-transition: 240ms cubic-bezier(.2,.9,.3,1);
+}
+
+/* target the guilds and main sidebar containers (selectors may vary by client version) */
+.luminara-floating-sidebar .guilds-1SWlCJ,
+.luminara-floating-sidebar .sidebar-2K8pFh,
+.luminara-floating-sidebar .container-2CxJKA,
+.luminara-floating-sidebar .channels-Ie2l6A /* fallback selector */ {
+  width: var(--lum-sidebar-width) !important;
+  min-width: var(--lum-sidebar-width) !important;
+  max-width: var(--lum-sidebar-width) !important;
+  border-radius: var(--lum-sidebar-radius);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) !important;
+  backdrop-filter: blur(var(--lum-sidebar-blur)) saturate(120%) !important;
+  box-shadow: var(--lum-sidebar-shadow) !important;
+  overflow: visible !important;
+  transition: width var(--lum-sidebar-transition), box-shadow var(--lum-sidebar-transition), transform var(--lum-sidebar-transition);
+  position: relative;
+  z-index: 20;
+}
+
+/* hover / focus expansion (hovering the whole sidebar area expands it) */
+.luminara-floating-sidebar .guilds-1SWlCJ:hover,
+.luminara-floating-sidebar .sidebar-2K8pFh:hover,
+.luminara-floating-sidebar .container-2CxJKA:hover {
+  width: var(--lum-sidebar-hover-width) !important;
+  min-width: var(--lum-sidebar-hover-width) !important;
+  max-width: var(--lum-sidebar-hover-width) !important;
+  transform: translateY(-4px);
+  box-shadow: 0 34px 80px rgba(3,4,12,0.75);
+}
+
+/* inner content fade in while expanded */
+.luminara-floating-sidebar .guilds-1SWlCJ .guildSeparator-3-J0Jb,
+.luminara-floating-sidebar .guilds-1SWlCJ .guild-2JXb8r,
+.luminara-floating-sidebar .sidebar-2K8pFh .containerDefault-7RImuF {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 200ms ease, transform 200ms ease;
+  pointer-events: none;
+}
+
+/* reveal when expanded */
+.luminara-floating-sidebar .guilds-1SWlCJ:hover .guild-2JXb8r,
+.luminara-floating-sidebar .sidebar-2K8pFh:hover .containerDefault-7RImuF {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* soft glowing edge when expanded */
+.luminara-floating-sidebar .guilds-1SWlCJ:hover::after,
+.luminara-floating-sidebar .sidebar-2K8pFh:hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: calc(var(--lum-sidebar-radius) + 6px);
+  background: linear-gradient(180deg, rgba(123,97,255,0.08), rgba(61,242,192,0.04));
+  filter: blur(16px);
+  pointer-events: none;
+}
+
+/* minimize noise: hide captions & long labels when collapsed */
+.luminara-floating-sidebar .guilds-1SWlCJ .name-3DLYMZ,
+.luminara-floating-sidebar .sidebar-2K8pFh .channelName-2YrOjO,
+.luminara-floating-sidebar .sidebar-2K8pFh .containerDefault-7RImuF .children-2W0Nev {
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+/* keep icons centered when collapsed */
+.luminara-floating-sidebar .guild-2JXb8r,
+.luminara-floating-sidebar .sidebar-2K8pFh .container-1ov-mR {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* show names after expansion */
+.luminara-floating-sidebar .guilds-1SWlCJ:hover .name-3DLYMZ,
+.luminara-floating-sidebar .sidebar-2K8pFh:hover .channelName-2YrOjO {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* subtle hover hint on each icon */
+.luminara-floating-sidebar .guild-2JXb8r .avatar-1BDn8e,
+.luminara-floating-sidebar .sidebar-2K8pFh .iconCenter-3E6Hb2 {
+  transition: transform 180ms var(--lum-sidebar-transition), box-shadow 180ms var(--lum-sidebar-transition);
+}
+.luminara-floating-sidebar .guild-2JXb8r:hover .avatar-1BDn8e,
+.luminara-floating-sidebar .sidebar-2K8pFh .wrapper-3D8h9A:hover .iconCenter-3E6Hb2 {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px var(--lum-sidebar-glow);
+}
+
+/* responsive: disable on small screens */
+@media (max-width: 900px) {
+  .luminara-floating-sidebar .guilds-1SWlCJ,
+  .luminara-floating-sidebar .sidebar-2K8pFh { width: auto !important; min-width: 56px !important; max-width: 280px !important; transform: none !important; box-shadow: none !important; backdrop-filter: none !important; }
+}
+
+/* Accessibility: reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .luminara-floating-sidebar .guilds-1SWlCJ,
+  .luminara-floating-sidebar .sidebar-2K8pFh { transition: none !important; transform: none !important; }
+  .luminara-floating-sidebar .guild-2JXb8r:hover .avatar-1BDn8e { transform: none !important; }
+}

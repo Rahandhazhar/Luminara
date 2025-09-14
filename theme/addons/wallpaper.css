@@ -1,0 +1,31 @@
+/**
+ * Luminara - Wallpaper Background
+ * File: theme/addons/wallpaper.css
+ */
+
+:root {
+  --lum-wallpaper: url("../../wallpaper/image.jpg");
+  --lum-wallpaper-blur: 16px;
+  --lum-wallpaper-brightness: 0.6;
+}
+
+/* full-screen wallpaper layer */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--lum-wallpaper) center/cover no-repeat;
+  filter: blur(var(--lum-wallpaper-blur)) brightness(var(--lum-wallpaper-brightness));
+  z-index: -9999; /* always behind */
+  pointer-events: none;
+  transition: filter 0.4s ease;
+}
+
+/* optional: remove Discord's default background */
+.appMount-2yBXZl,
+.bg-1QIAus {
+  background: transparent !important;
+}

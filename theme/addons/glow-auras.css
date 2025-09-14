@@ -1,0 +1,75 @@
+/**
+ * Luminara - Glow Auras addon
+ * Put this file into theme/addons/glow-auras.css and import or concatenate with Luminara.theme.css
+ */
+
+:root{
+  --luminara-accent-1: #7b61ff; /* purple */
+  --luminara-accent-2: #ff6fb5; /* pink */
+  --luminara-accent-3: #3df2c0; /* teal */
+  --luminara-glow-opacity: 0.12;
+  --luminara-glow-blur: 140px;
+  --luminara-aura-size: 60vmax;
+}
+
+/* Aura wrapper (injected by plugin or add manually to DOM) */
+.theme-auras.luminara {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* two large soft radial glows */
+.theme-auras.luminara::before,
+.theme-auras.luminara::after {
+  content: "";
+  position: absolute;
+  width: var(--luminara-aura-size);
+  height: var(--luminara-aura-size);
+  border-radius: 50%;
+  filter: blur(var(--luminara-glow-blur)) saturate(120%);
+  opacity: var(--luminara-glow-opacity);
+  transform: translateZ(0);
+}
+
+/* warm-purple-pink glow (top-left) */
+.theme-auras.luminara::before {
+  left: -12%;
+  top: -18%;
+  background: radial-gradient(circle, rgba(123,97,255,0.95) 0%, rgba(255,111,181,0.25) 40%, transparent 60%);
+  transform: translate(-10%, -8%) rotate(6deg);
+}
+
+/* teal-purple glow (bottom-right) */
+.theme-auras.luminara::after {
+  right: -10%;
+  bottom: -22%;
+  background: radial-gradient(circle, rgba(61,242,192,0.92) 0%, rgba(123,97,255,0.12) 45%, transparent 70%);
+  transform: translate(6%, 8%) rotate(-8deg);
+}
+
+/* Optional: subtle motion using CSS animation for a breathing effect */
+@keyframes luminara-aura-breathe {
+  0% { transform: scale(1) translateZ(0); opacity: var(--luminara-glow-opacity); }
+  50% { transform: scale(1.02) translateZ(0); opacity: calc(var(--luminara-glow-opacity) * 1.05); }
+  100% { transform: scale(1) translateZ(0); opacity: var(--luminara-glow-opacity); }
+}
+.theme-auras.luminara::before,
+.theme-auras.luminara::after {
+  animation: luminara-aura-breathe 18s ease-in-out infinite;
+}
+
+/* If user wants a reduced-intensity mode */
+.theme-auras.luminara[data-intensity="low"]::before,
+.theme-auras.luminara[data-intensity="low"]::after {
+  opacity: calc(var(--luminara-glow-opacity) * 0.45);
+  filter: blur(calc(var(--luminara-glow-blur) * 0.85));
+}
+
+/* Accessibility: hide animation if prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .theme-auras.luminara::before,
+  .theme-auras.luminara::after { animation: none; }
+}

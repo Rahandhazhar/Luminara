@@ -1,0 +1,112 @@
+/**
+ * Luminara - Main Theme
+ * Author: You
+ * Version: 1.0
+ * Description: Vibrant, glowing Discord theme with smooth transitions and custom addons.
+ */
+
+/* ==========================
+   0. Core Variables
+   ========================== */
+:root {
+  --lum-accent1: #7b61ff;
+  --lum-accent2: #3df2c0;
+  --lum-accent3: #ff6fb5;
+  --lum-bg-primary: rgba(12,12,20,0.92);
+  --lum-bg-secondary: rgba(18,18,28,0.8);
+  --lum-text-primary: #e5e5e5;
+  --lum-text-secondary: #b5b5c5;
+  --lum-radius: 12px;
+  --lum-transition: 200ms cubic-bezier(.2,.9,.3,1);
+}
+
+/* ==========================
+   1. Wallpaper
+   ========================== */
+@import url("./addons/wallpaper.css");
+
+/* ==========================
+   2. Floating Sidebar
+   ========================== */
+@import url("./addons/floating-sidebar.css");
+
+/* ==========================
+   3. Smooth Reactions
+   ========================== */
+@import url("./addons/smooth-reactions.css");
+
+/* ==========================
+   4. Vibrant Scrollbars
+   ========================== */
+@import url("./addons/vibrant-scrollbars.css");
+
+/* ==========================
+   5. Message Hover Card
+   ========================== */
+@import url("./addons/message-hover-card.css");
+
+/* ==========================
+   6. Glowing Input Box
+   ========================== */
+@import url("./addons/glowing-input.css");
+
+/* ==========================
+   7. Compact Chat (optional)
+   ========================== */
+@import url("./addons/compact-chat.css"); /* only if you made this addon */
+
+/* ==========================
+   8. Additional Tweaks
+   ========================== */
+
+/* apply accent highlights to links and buttons */
+a,
+.button-38aScr,
+.button-2m7V2Q {
+  color: var(--lum-accent1);
+  transition: color var(--lum-transition);
+}
+a:hover,
+.button-38aScr:hover,
+.button-2m7V2Q:hover {
+  color: var(--lum-accent2);
+}
+
+/* global font smoothing & shadows */
+/* global font smoothing & shadows */
+* {
+  -webkit-font-smoothing: antialiased !important; /* Chrome, Safari, Edge */
+  -moz-osx-font-smoothing: grayscale !important;  /* Firefox on macOS */
+  transition: all var(--lum-transition) !important;
+}
+
+
+/* default dark background */
+.theme-dark,
+.theme-dark .appMount-2yBXZl {
+  background: var(--lum-bg-primary) !important;
+  color: var(--lum-text-primary) !important;
+}
+
+/* subtle card/background for secondary panels */
+.theme-dark .container-3baos1,
+.theme-dark .layer-2lt3qi {
+  background: var(--lum-bg-secondary) !important;
+  border-radius: var(--lum-radius) !important;
+}
+
+/* accessibility: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+  .message-2qnXI6:hover, .messageListItem-3V3k7y:hover { transform: none !important; }
+  .channelTextArea-1V5u9u[data-mode="pulse"]:focus-within::before,
+  .channelTextArea-1V5u9u[data-mode="pulse"]:focus-within::after { animation: none; }
+}
+
+/* ==========================
+   9. Toggle Classes (optional)
+   ========================== */
+
+/* To enable floating sidebar: add .luminara-floating-sidebar to <body> */
+/* To enable compact chat: add .luminara-compact to <body> */
+/* To change input box glow: set data-mode="pulse|solid|none" on .channelTextArea-1V5u9u */

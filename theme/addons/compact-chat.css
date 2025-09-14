@@ -1,0 +1,77 @@
+/**
+ * Luminara - Compact Chat addon
+ * Put this file into theme/addons/compact-chat.css and import or concatenate with Luminara.theme.css
+ *
+ * Usage:
+ * - To enable by default, add the class `luminara-compact` to <body> in preview or let a plugin toggle it in real client.
+ */
+
+/* Base compact adjustments */
+.luminara-compact .message-2qnXI6,
+.luminara-compact .messageListItem-3V3k7y {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  margin: 2px 0 !important;
+}
+
+/* small avatars */
+.luminara-compact .avatar-1BDn8e,
+.luminara-compact .avatarDefault-3f1jk2,
+.luminara-compact .avatar-small {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 8px !important;
+}
+
+/* message content gets more width */
+.luminara-compact .messageContent-2qWWxC,
+.luminara-compact .markup-2BOw-j {
+  margin-left: 8px !important;
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+}
+
+/* username spacing smaller */
+.luminara-compact .username-1A8OIy {
+  font-size: 13px !important;
+  margin-bottom: 0px !important;
+}
+
+/* timestamp smaller and less prominent */
+.luminara-compact .timestamp-3lK4kG {
+  font-size: 11px !important;
+  opacity: 0.6 !important;
+}
+
+/* single-line mode: collapse message bubble to one line if content short */
+.luminara-compact.luminara-singleline .message-2qnXI6 .markup-2BOw-j {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* compact attachments (thumbnails) */
+.luminara-compact .attachment-1I4t1G,
+.luminara-compact .image-2y3ZF8 {
+  max-height: 160px !important;
+  border-radius: 8px !important;
+}
+
+/* optional: tighter input area */
+.luminara-compact .channelTextArea-1V5u9u,
+.luminara-compact textarea {
+  padding: 8px !important;
+  font-size: 14px !important;
+}
+
+/* small helpful utility class for preview toggles */
+.luminara-compact-toggle {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 100000;
+  padding: 6px 10px;
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+}
